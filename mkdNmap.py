@@ -25,21 +25,21 @@ parser.add_argument("-o", help="Escribe el nombre del objetivo para crear las ca
 
 args = parser.parse_args()
 
-#Variables
+#Variable dir actual
 dirAct = pathlib.Path.cwd()
 
 
 
-
+#Funcion principal con o sin argumento opcional
 if args.o:
     print(bcolors.WARNING + "[*]" + bcolors.ENDC + bcolors.GREY + "Argumento opcional solicitado: -o" + bcolors.ENDC)
     print(bcolors.WARNING + "[!]" + bcolors.ENDC + bcolors.GREY + "Se van a crear las carpetas: "+ str(dirAct.joinpath(args.o, "nmap  "))+ "content  " + "exploits  " + "scripts" + bcolors.ENDC)
-    try:
+    try:#crear carpetas necesarias si no existen
         os.makedirs(dirAct.joinpath(args.o, "nmap"))
         os.makedirs(dirAct.joinpath(args.o, "content"))
         os.makedirs(dirAct.joinpath(args.o, "exploits"))
         os.makedirs(dirAct.joinpath(args.o, "scripts"))
-    except FileExistsError:
+    except FileExistsError: #meter código de error de carpeta existente a sobreescribir archivo
         opcion = input(bcolors.PURPLE + "Esta carpeta ya existe, ¿Está seguro que desea realizar el escaneo en la carpeta actual? s/n: " + bcolors.ENDC)
         if opcion == "s":
             print(bcolors.WARNING + "[*] Se va a realizar el escaneo en este mismo directorio" + bcolors.ENDC)
@@ -57,7 +57,7 @@ if args.o:
         else:
             print(bcolors.FAIL + "No reconozco la opción elegida, saliendo del programa..." + bcolors.ENDC)
             exit ()
-else:
+else:#Realizar igualmente el escaneo aunque no se seleccione una carpeta opcional
     opcion = input(bcolors.PURPLE + "¿Está seguro que desea realizar el escaneo en la carpeta actual? s/n: " + bcolors.ENDC)
     if opcion == "s":
         print(bcolors.WARNING + "[*] No ha colocado ningún argumento opcional. \n[*] Se va a realizar el escaneo en este mismo directorio" + bcolors.ENDC)
@@ -77,7 +77,7 @@ else:
         print(bcolors.FAIL + "No reconozco la opción elegida, saliendo del programa..." + bcolors.ENDC)
         exit ()
 
-if args.ip:
+if args.ip:#Realizar escaneo
     #Sacar directorio destino
     scan = os.path.dirname(dirAct.joinpath(args.o, "nmap"))
     nmDir = scan + "/nmap"
